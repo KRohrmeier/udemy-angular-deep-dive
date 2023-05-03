@@ -1,44 +1,43 @@
 <div class="course-card" *ngIf="course" #container>
-
   <div class="course-title">
-
-      {{ cardIndex || '' + ' ' + course.description }}
-
+      {{ course.description }}
   </div>
 
-  <ng-content select="course-image"
-              *ngIf="course.iconUrl"></ng-content>
+  <!-- 
+    course-image, but how are they connected? 
+    in app comp, <course-image [src]="course.iconUrl"></course-image> 
+    is a child component (is that the right term??)
+  -->
+  <!-- <ng-content 
+    select="course-image"
+    *ngIf="course.iconUrl">
+  </ng-content> -->
+  <img width="300" [src]="course.iconUrl" />
 
   <div class="course-description">
-
-    Edit Title: <input #courseTitle [value]="course.description"
-                       (keyup)="onTitleChanged(courseTitle.value)">
-
+    Edit Title: 
+    <input 
+      #courseTitle
+      [value]="course.description"
+      (keyup)="onTitleChanged(courseTitle.value)"
+    >
   </div>
 
+  <!-- not sure how this works... -->
   <div class="course-category">
-
     <div class="category" i18n>
-
-        {
-            course.category,
-            select,
-            BEGINNER {Beginner}
-            INTERMEDIATE {Intermediate}
-            ADVANCED {Advanced}
-        }
-
+      {
+        course.category,
+        select,
+        BEGINNER {Beginner}
+        INTERMEDIATE {Intermediate}
+        ADVANCED {Advanced}
+      }
     </div>
-
-
   </div>
 
-  <button (click)="onSaveClicked(courseTitle.value)">Save Course</button>
+  <button (click)="onCourseView(course)">
+    View Course
+  </button>
 
 </div>
-
-
-
-
-
-

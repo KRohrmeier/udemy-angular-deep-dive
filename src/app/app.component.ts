@@ -1,12 +1,10 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, Inject, Injector, OnInit} from '@angular/core';
-import {Course} from './model/course';
-import {Observable} from 'rxjs';
-import {AppConfig, CONFIG_TOKEN} from './config';
-import {COURSES} from '../db-data';
-import {CoursesService} from './courses/courses.service';
-import {createCustomElement} from '@angular/elements';
-import {CourseTitleComponent} from './course-title/course-title.component';
-
+import { Component, Inject, Injector, OnInit } from '@angular/core';
+import { Course } from './model/course';
+import { AppConfig, CONFIG_TOKEN } from './config';
+import { COURSES } from '../db-data';
+import { CoursesService } from './courses/courses.service';
+import { createCustomElement } from '@angular/elements';
+import { CourseTitleComponent } from './course-title/course-title.component';
 
 @Component({
     selector: 'app-root',
@@ -14,38 +12,33 @@ import {CourseTitleComponent} from './course-title/course-title.component';
     styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  courses: Course[] = COURSES;
+  coursesTotal = this.courses.length;
 
-    courses: Course[] = COURSES;
+  constructor(
+      private coursesService: CoursesService,
+      @Inject(CONFIG_TOKEN) private config: AppConfig,
+      private injector: Injector) {
+  }
 
-    coursesTotal = this.courses.length;
+  ngOnInit() {
+      const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
+      customElements.define('course-title', htmlElement);
+  }
 
-    constructor(
-        private coursesService: CoursesService,
-        @Inject(CONFIG_TOKEN) private config: AppConfig,
-        private injector: Injector) {
+  onCourseSelected(course: Course) {
+    console.log('event bubbled up to app component... ', course);
+  }
 
-    }
+  onEditCourse() {
+    // this.courses[1].category = 'ADVANCED'; //why is this here?
+    console.log('clicked edit course');
+  }
 
-    ngOnInit() {
-
-        const htmlElement = createCustomElement(CourseTitleComponent, {injector:this.injector});
-
-        customElements.define('course-title', htmlElement);
-
-    }
-
-    onEditCourse() {
-
-            this.courses[1].category = 'ADVANCED';
-
-    }
-
-    save(course: Course) {
-        this.coursesService.saveCourse(course)
-            .subscribe(
-                () => console.log('Course Saved!')
-            );
-    }
-
-
+  save(course: Course) {
+      this.coursesService.saveCourse(course)
+        .subscribe(
+          () => console.log('Course Saved!')
+        );
+  }
 }
