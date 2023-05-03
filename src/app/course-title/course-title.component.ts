@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'course-title',
@@ -6,13 +6,10 @@ import {Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnInit} from '@angular/core';
   styleUrls: ['./course-title.component.css']
 })
 export class CourseTitleComponent implements OnInit {
-
-   @Input()
+  @Input()
   title:string;
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() { }
 }
